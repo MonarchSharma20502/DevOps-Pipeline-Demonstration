@@ -7,6 +7,7 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
+# CI PIPELINE
 name: Publish Docker image
 
 on:
@@ -15,39 +16,50 @@ on:
       - main
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  deploy:
+    # name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-      attestations: write
-      id-token: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v6
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          # port: ${{ secrets.REMOTE_PORT }}
+          script: |
+            cd /C:\Users\monarch
+            docker stop python-app || true
+            docker rm python-app || true
+            docker compose up -d
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: https://hub.docker.com/repository/docker/monarchsharma/devops-repository/general
+      # - name: Log in to Docker Hub
+      #   uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
-        id: push
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        with:
-          context: .
-          # file: ./Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      #   with:
+      #     images: |
+      #       monarchsharma/devops-repository
+
+      # - name: Build and push Docker image
+      #   id: push
+      #   uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+      #   with:
+      #     context: .
+      #     # file: ./Dockerfile
+      #     push: true
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
+
+
 
       # - name: Generate artifact attestation
       #   uses: actions/attest@v4
@@ -55,15 +67,20 @@ jobs:
       #     subject-name: index.docker.io/monarchsharma/devops
       #     subject-digest: ${{ steps.push.outputs.digest }}
       #     push-to-registry: true
-      - name: Continuous Deployment to Remote Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.REMOTE_KEY }}
-          port: ${{ secrets.REMOTE_PORT }}
-          script: |
-            docker pull monarchsharma/devops-repository:latest
-            docker stop python-app || true
-            docker rm python-app || true
-            docker run -d --name python-app -p 9000:9000 monarchsharma/devops-repository:latest
+
+
+      #  CD PIPELINE (We should perform authentication of GitHub to the Remote Server)
+      # - name: Deploy to Remote Server
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.REMOTE_HOST }}
+      #     username: ${{ secrets.REMOTE_USER }}
+      #     key: ${{ secrets.REMOTE_KEY }}
+      #     # port: ${{ secrets.REMOTE_PORT }}
+      #     script: |
+      #       docker pull monarchsharma/devops-repository:latest
+      #       docker stop python-app || true
+      #       docker rm python-app || true
+      #       docker compose up -d
+# docker run -d --name python-app -p 9000:9000 monarchsharma/devops-repository:latest
+            
