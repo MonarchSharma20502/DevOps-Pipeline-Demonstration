@@ -31,14 +31,28 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           # port: ${{ secrets.REMOTE_PORT }}
           script: |
-            cd C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration
-            docker stop python-container
-            docker rm python-container
-            git pull origin main
-            docker compose build --no-cache
+            powershell -Command "
+            Set-Location C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration;
+            git pull origin main;
+            docker stop python-container 2>$null;
+            docker rm python-container 2>$null;
+            docker compose build --no-cache;
             docker compose up -d
+            "
+
+          # My before script (which is not working)
+          # script: |
+          #   cd C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration
+          #   docker stop python-container
+          #   docker rm python-container
+          #   git pull origin main
+          #   docker compose build --no-cache
+          #   docker compose up -d
 # docker build -t python-image:v1 .
 
+
+
+          # AI suggested script
           # script: |
           #   powershell -Command "
           #   Set-Location C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration;
