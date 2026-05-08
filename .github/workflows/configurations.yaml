@@ -34,6 +34,7 @@ jobs:
             cd C:\Users\monarch
             docker stop python-app || true
             docker rm python-app || true
+            git pull origin main
             docker compose up -d
 
       # - name: Log in to Docker Hub
