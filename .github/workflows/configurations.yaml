@@ -31,10 +31,10 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           # port: ${{ secrets.REMOTE_PORT }}
           script: |
-            mkdir devops-project || true
+            mkdir DevOps-Pipeline-Demonstration || true
             cd C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration
-            docker stop devops-pipeline-demonstration-python-app-1 || true
-            docker rm devops-pipeline-demonstration-python-app-1 || true
+            docker stop python-container || true
+            docker rm python-container || true
             git pull origin main
             # docker build -t python-image:v1 .
             docker compose up -d
