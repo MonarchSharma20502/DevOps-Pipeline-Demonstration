@@ -33,10 +33,11 @@ jobs:
           script: |
             mkdir devops-project || true
             cd C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration
-            docker stop python-app || true
-            docker rm python-app || true
+            docker stop devops-pipeline-demonstration-python-app-1 || true
+            docker rm devops-pipeline-demonstration-python-app-1 || true
             git pull origin main
-            docker compose up -d --build
+            # docker build -t python-image:v1 .
+            docker compose up -d
 
       # - name: Log in to Docker Hub
       #   uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
