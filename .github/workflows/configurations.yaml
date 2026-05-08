@@ -31,7 +31,7 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           # port: ${{ secrets.REMOTE_PORT }}
           script: |
-            cd C:\Users\monarch
+            cd C:\Users\monarch\Desktop
             docker stop python-app || true
             docker rm python-app || true
             git pull origin main
