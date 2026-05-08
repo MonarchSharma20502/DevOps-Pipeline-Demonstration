@@ -32,8 +32,8 @@ jobs:
           # port: ${{ secrets.REMOTE_PORT }}
           script: |
             cd C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration
-            docker stop python-container || true
-            docker rm python-container || true
+            docker stop python-container
+            docker rm python-container
             git pull origin main
             docker compose build --no-cache
             docker compose up -d
