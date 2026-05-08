@@ -31,7 +31,7 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           # port: ${{ secrets.REMOTE_PORT }}
           script: |
-            mkdir DevOps-Pipeline-Demonstration || true
+            mkdir DevOps-Pipeline-Demonstration
             cd C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration
             docker stop python-container || true
             docker rm python-container || true
