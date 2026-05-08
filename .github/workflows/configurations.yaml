@@ -31,11 +31,12 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           # port: ${{ secrets.REMOTE_PORT }}
           script: |
-            cd C:\Users\monarch\Desktop
+            mkdir devops-project || true
+            cd C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration
             docker stop python-app || true
             docker rm python-app || true
             git pull origin main
-            docker compose up -d
+            docker compose up -d --build
 
       # - name: Log in to Docker Hub
       #   uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
