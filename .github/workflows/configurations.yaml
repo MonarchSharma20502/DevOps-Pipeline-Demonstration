@@ -31,13 +31,27 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           # port: ${{ secrets.REMOTE_PORT }}
           script: |
-            mkdir DevOps-Pipeline-Demonstration
             cd C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration
             docker stop python-container || true
             docker rm python-container || true
             git pull origin main
-            # docker build -t python-image:v1 .
             docker compose up -d
+# docker build -t python-image:v1 .
+
+          # script: |
+          #   powershell -Command "
+          #   Set-Location C:\Users\monarch\Desktop\DevOps-Pipeline-Demonstration;
+          #   git pull origin main;
+          #   docker stop python-container;
+          #   docker rm python-container;
+          #   docker compose up -d --build;"
+
+
+
+
+
+
+
 
       # - name: Log in to Docker Hub
       #   uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
