@@ -35,6 +35,7 @@ jobs:
             docker stop python-container || true
             docker rm python-container || true
             git pull origin main
+            docker compose build --no-cache
             docker compose up -d
 # docker build -t python-image:v1 .
 
@@ -44,6 +45,7 @@ jobs:
           #   git pull origin main;
           #   docker stop python-container;
           #   docker rm python-container;
+          #   docker compose build --no-cache;
           #   docker compose up -d --build;"
 
 
